@@ -1,0 +1,27 @@
+.im-color-picker {
+  display: flex;
+}
+
+.im-color-picker__container {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.im-color-picker__canvas {
+  width: 100%;
+  height: 100%;
+}
+.im-color-picker__radio {
+  position: absolute;
+  border: 1px solid black;
+  top: 50%;
+  left: 0;
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+  border-radius: 50%;
+  width: 0.625rem;
+  height: 0.625rem;
+  transform: translateY(-50%);
+}
