@@ -1,25 +1,8 @@
 import "./style.css";
-import { HandlingCanvas, HandlingMouse } from "./classes";
+import { ColorTemperature } from "./classes";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-<div class="im-color-picker">
-    <div class="im-color-picker__container"
-    style="width:900px;height:50px">
-  <canvas
-    id="canvas"
-    class="im-color-picker__canvas"
-  >
-  </canvas>
-  <div
-    id="radio"
-    class="im-color-picker__radio"
-  ></div>
-</div>
-</div>
-`;
+const colorTemperature = new ColorTemperature("#app", 1000, 40);
 
-const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
-const radio = document.querySelector("#radio") as HTMLDivElement;
-const canvasRender = new HandlingCanvas(1000, 40000, canvas, radio);
-canvasRender.buildCanvasColorTemperature();
-new HandlingMouse(canvas, radio);
+colorTemperature.create();
+
+console.log(colorTemperature.color);
