@@ -4,7 +4,7 @@ import { HandlingCanvas, HandlingMouse } from "./classes";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <div class="im-color-picker">
     <div class="im-color-picker__container"
-    style="width:1000px;height:50px">
+    style="width:900px;height:50px">
   <canvas
     id="canvas"
     class="im-color-picker__canvas"
