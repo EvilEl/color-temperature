@@ -1,39 +1,47 @@
-import { getColor } from "../utility";
+export class Controllers {
+  private _color: string;
 
-export class HandlingMouse {
   canvas: HTMLCanvasElement;
   radio: HTMLDivElement;
-  #color = "";
   mouseUp: () => void;
   mouseMove: (event: MouseEvent) => void;
   rectRadio: DOMRect;
   rectCanvas: DOMRect;
-  constructor(canvas: HTMLCanvasElement, radio: HTMLDivElement) {
+  context: CanvasRenderingContext2D;
+  constructor(
+    canvas: HTMLCanvasElement,
+    radio: HTMLDivElement,
+    context: CanvasRenderingContext2D
+  ) {
     this.canvas = canvas;
     this.radio = radio;
 
-    this.#color = "";
+    this.radio.addEventListener("pointerdown", this.onMouseDown.bind(this));
+    this.canvas.addEventListener("click", this.moveAt.bind(this));
 
-    this.radio?.addEventListener("pointerdown", this.onMouseDown.bind(this));
-    this.canvas?.addEventListener("click", this.moveAt.bind(this));
+    this._color = radio.style.background;
 
     this.mouseUp = this.onMouseUp.bind(this);
     this.mouseMove = this.onMouseMove.bind(this);
 
     this.rectRadio = radio.getBoundingClientRect();
     this.rectCanvas = canvas.getBoundingClientRect();
-  }
 
-  public get color() {
-    return this.#color;
+    this.context = context;
   }
   //нажимаем
   onMouseDown(event: MouseEvent): void {
-    console.log("im here");
-
     this.moveAt(event);
     document.addEventListener("pointerup", this.mouseUp);
     document.addEventListener("pointermove", this.mouseMove);
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  set color(value: string) {
+    this._color = value;
   }
 
   //перемещение
@@ -43,7 +51,7 @@ export class HandlingMouse {
     this.radio.style.background = this.getColorCanvas(event);
   }
 
-  // //отпускаем
+  //отпускаем
   private onMouseUp(): void {
     document.removeEventListener("pointerup", this.mouseUp);
     document.removeEventListener("pointermove", this.mouseMove);
@@ -62,21 +70,12 @@ export class HandlingMouse {
     } else if (coordinateX > 100 - radioPercent) {
       formatCoordinate = 100 - radioPercent;
     }
-
     this.radio.style.left = `${formatCoordinate}%`;
-    this.radio.style.background = getColor({
-      event,
-      rectRadio: this.rectRadio,
-      rectCanvas: this.rectCanvas,
-      canvas: this.canvas,
-    });
-    this.#color = this.radio.style.background;
+    this.radio.style.background = this.getColorCanvas(event);
+    this.color = this.radio.style.background;
   }
 
   public getColorCanvas(event: MouseEvent): string {
-    const contextTwoD = this.canvas.getContext(
-      "2d"
-    ) as CanvasRenderingContext2D;
     const positionY = Math.floor(this.rectCanvas.height / 2);
     let positionX = Math.floor(
       event.x - this.rectCanvas.left - this.rectRadio.width
@@ -86,7 +85,7 @@ export class HandlingMouse {
     } else if (positionX + this.rectRadio.width > this.rectCanvas.width) {
       positionX = this.rectCanvas.width - 1;
     }
-    const imageData = contextTwoD.getImageData(positionX, positionY, 1, 1);
+    const imageData = this.context.getImageData(positionX, positionY, 1, 1);
     const pixels = imageData.data;
     const pixelColor = `rgba(${pixels[0]},${pixels[1]},${pixels[2]},${pixels[3]})`;
     return pixelColor;
