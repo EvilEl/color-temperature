@@ -1,3 +1,5 @@
-export * from "./BuildCanvas";
-export * from "./Controllers";
-export * from "./CreateColorTemperature";
+import { BuildCanvas } from "./BuildCanvas";
+import { Controllers } from "./Controllers";
+import { ColorTemperature } from "./ColorTemperature";
+
+export { BuildCanvas, Controllers, ColorTemperature };

@@ -1,1 +1,3 @@
-export * from "./i-color-temperature";
+import { IColorTemperature } from "./i-color-temperature";
+
+export type { IColorTemperature };

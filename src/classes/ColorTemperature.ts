@@ -7,26 +7,31 @@ export class ColorTemperature {
   instance: string;
   component: string;
   canvasRender: BuildCanvas | null;
-  constructor(instance: string, width: number, height: number) {
+  rgbColor: string;
+  constructor(
+    instance: string,
+    width: number,
+    height: number,
+    rgbColor?: string
+  ) {
     this.width = width;
     this.height = height;
     this.instance = instance;
     this.component = render(this.width, this.height);
     this.canvasRender = null;
+    this.rgbColor = rgbColor ?? "";
   }
 
-  create() {
-    document.querySelector<HTMLDivElement>(
-      this.instance
-    )!.innerHTML = `${this.component}`;
+  create(kelvinStart = 1000, kelvinEnd = 40000) {
+    document.querySelector(this.instance)!.innerHTML = `${this.component}`;
     const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
     const radio = document.querySelector("#radio") as HTMLDivElement;
     this.canvasRender = new BuildCanvas({
-      kelvinStart: 1000,
-      kelvinEnd: 40000,
+      kelvinStart,
+      kelvinEnd,
       canvas,
       radio,
-      color: "rgb(168, 255, 255)",
+      color: this.rgbColor,
     });
     this.canvasRender.create();
   }

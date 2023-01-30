@@ -1,1 +1,3 @@
-export * from "./i-get-color";
+import { IGetColor } from "./i-get-color";
+
+export type { IGetColor };
