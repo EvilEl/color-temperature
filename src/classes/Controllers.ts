@@ -1,20 +1,26 @@
-export class Controllers {
-  private _color: string;
+import { IControllerEventOptions } from "./models";
 
+export class Controllers {
   canvas: HTMLCanvasElement;
   radio: HTMLDivElement;
+  context: CanvasRenderingContext2D;
+  controllersEventOptions: IControllerEventOptions;
+
   mouseUp: () => void;
   mouseMove: (event: MouseEvent) => void;
   rectRadio: DOMRect;
   rectCanvas: DOMRect;
-  context: CanvasRenderingContext2D;
+  private _color: string;
   constructor(
     canvas: HTMLCanvasElement,
     radio: HTMLDivElement,
-    context: CanvasRenderingContext2D
+    context: CanvasRenderingContext2D,
+    controllersEventOptions?: IControllerEventOptions
   ) {
     this.canvas = canvas;
     this.radio = radio;
+    this.context = context;
+    this.controllersEventOptions = controllersEventOptions ?? {};
 
     this.radio.addEventListener("pointerdown", this.onMouseDown.bind(this));
     this.canvas.addEventListener("click", this.moveAt.bind(this));
@@ -26,8 +32,6 @@ export class Controllers {
 
     this.rectRadio = radio.getBoundingClientRect();
     this.rectCanvas = canvas.getBoundingClientRect();
-
-    this.context = context;
   }
   //нажимаем
   onMouseDown(event: MouseEvent): void {
@@ -48,7 +52,8 @@ export class Controllers {
   public onMouseMove(event: MouseEvent): void {
     event.preventDefault();
     this.moveAt(event);
-    this.radio.style.background = this.getColorCanvas(event);
+    this.radio.style.background;
+    this.getColorCanvas(event);
   }
 
   //отпускаем
@@ -60,10 +65,7 @@ export class Controllers {
   // изменяем положение, движущегося элемента
   public moveAt(event: MouseEvent): void {
     const radioPercent = (this.rectRadio.width / this.rectCanvas.width) * 100;
-    const coordinateX =
-      ((event.x - this.rectCanvas.left - this.rectRadio.width / 2) /
-        this.rectCanvas.width) *
-      100;
+    const coordinateX = ((event.x - this.rectCanvas.left - this.rectRadio.width / 2) / this.rectCanvas.width) * 100;
     let formatCoordinate = coordinateX;
     if (coordinateX < 0) {
       formatCoordinate = 0;
@@ -77,9 +79,7 @@ export class Controllers {
 
   public getColorCanvas(event: MouseEvent): string {
     const positionY = Math.floor(this.rectCanvas.height / 2);
-    let positionX = Math.floor(
-      event.x - this.rectCanvas.left - this.rectRadio.width
-    );
+    let positionX = Math.floor(event.x - this.rectCanvas.left - this.rectRadio.width);
     if (positionX < 0) {
       positionX = 1;
     } else if (positionX + this.rectRadio.width > this.rectCanvas.width) {
@@ -87,7 +87,10 @@ export class Controllers {
     }
     const imageData = this.context.getImageData(positionX, positionY, 1, 1);
     const pixels = imageData.data;
-    const pixelColor = `rgba(${pixels[0]},${pixels[1]},${pixels[2]},${pixels[3]})`;
+    const pixelColor = `rgb(${pixels[0]},${pixels[1]},${pixels[2]})`;
+    if (this.controllersEventOptions.getColor) {
+      this.controllersEventOptions.getColor(pixelColor);
+    }
     return pixelColor;
   }
 }

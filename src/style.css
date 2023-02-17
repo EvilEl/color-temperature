@@ -1,18 +1,18 @@
-.im-color-picker {
+.temperature-picker {
   display: flex;
 }
 
-.im-color-picker__container {
+.temperature-picker__container {
   position: relative;
   margin: 0;
   padding: 0;
   width: 100%;
 }
-.im-color-picker__canvas {
+.temperature-picker__canvas {
   width: 100%;
   height: 100%;
 }
-.im-color-picker__radio {
+.temperature-picker__radio {
   position: absolute;
   border: 1px solid black;
   top: 50%;
