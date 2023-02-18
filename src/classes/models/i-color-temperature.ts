@@ -1,6 +1,4 @@
-import { ICanvasOptions } from "../models";
-
-export interface IColorTemperature extends Pick<ICanvasOptions, "timeout"> {
+export interface IColorTemperature {
   canvas: HTMLCanvasElement;
   radio: HTMLDivElement;
   kelvinStart: number;
