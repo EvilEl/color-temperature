@@ -27,13 +27,16 @@ export class ColorTemperature {
     document.querySelector(this.instance)!.appendChild(this.component);
     const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
     const radio = document.querySelector("#radio") as HTMLDivElement;
-    this.canvasRender = new BuildCanvas({
-      kelvinStart: this.canvasOptions.kelvinStart ?? 1000,
-      kelvinEnd: this.canvasOptions.kelvinEnd ?? 40000,
-      canvas,
-      radio,
-      color: this.rgbColor,
-    });
+    this.canvasRender = new BuildCanvas(
+      {
+        kelvinStart: this.canvasOptions.kelvinStart ?? 1000,
+        kelvinEnd: this.canvasOptions.kelvinEnd ?? 40000,
+        canvas,
+        radio,
+        color: this.rgbColor,
+      },
+      this.controllersEventOptions
+    );
     this.canvasRender.create();
   }
 

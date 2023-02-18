@@ -7,7 +7,6 @@ export class BuildCanvas {
   radio: HTMLDivElement;
   kelvinStart: number;
   kelvinEnd: number;
-  timeout: number;
   private _color: string;
   rectCanvas: DOMRect;
   rectRadio: DOMRect;
@@ -18,7 +17,6 @@ export class BuildCanvas {
     this.radio = options.radio;
     this.kelvinStart = options.kelvinStart;
     this.kelvinEnd = options.kelvinEnd;
-    this.timeout = options.timeout ?? 0;
     this._color = options.color ?? "";
     this.rectCanvas = this.canvas.getBoundingClientRect();
     this.rectRadio = this.radio.getBoundingClientRect();
@@ -92,14 +90,9 @@ export class BuildCanvas {
         this.context.fillRect(w, h, 1, 1);
       }
     }
-    setTimeout(() => {
-      if (!this.context) {
-        return;
-      }
-      const selectedColorIndex = this.getSelectedColorIndex(this.color);
-      const controllers = new Controllers(this.canvas, this.radio, this.context, this.controllersEventOptions);
-      controllers.moveAt({ x: Number(selectedColorIndex) } as MouseEvent);
-      this.color = controllers.color;
-    }, this.timeout);
+    const selectedColorIndex = this.getSelectedColorIndex(this.color);
+    const controllers = new Controllers(this.canvas, this.radio, this.context, this.controllersEventOptions);
+    controllers.moveAt({ x: Number(selectedColorIndex) } as MouseEvent);
+    this.color = controllers.color;
   }
 }
