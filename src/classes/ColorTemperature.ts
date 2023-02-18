@@ -19,7 +19,10 @@ export class ColorTemperature {
     this.canvasOptions = canvasOptions;
     this.controllersEventOptions = controllersEventOptions ?? {};
     this.rgbColor = rgbColor ?? "";
-    this.component = render(this.canvasOptions.width, this.canvasOptions.height);
+    this.component = render(
+      this.canvasOptions.width,
+      this.canvasOptions.height
+    );
     this.canvasRender = null;
   }
 

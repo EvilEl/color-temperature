@@ -12,7 +12,10 @@ export class BuildCanvas {
   rectRadio: DOMRect;
   context: CanvasRenderingContext2D | null;
   controllersEventOptions: IControllerEventOptions;
-  constructor(options: IColorTemperature, controllersEventOptions?: IControllerEventOptions) {
+  constructor(
+    options: IColorTemperature,
+    controllersEventOptions?: IControllerEventOptions
+  ) {
     this.canvas = options.canvas;
     this.radio = options.radio;
     this.kelvinStart = options.kelvinStart;
@@ -84,14 +87,20 @@ export class BuildCanvas {
     const { width, height } = this.canvas;
     for (let w = 0; w < width; w++) {
       for (let h = 0; h < height; h++) {
-        const kelvin = ((this.kelvinEnd - this.kelvinStart) / width) * w + this.kelvinStart;
+        const kelvin =
+          ((this.kelvinEnd - this.kelvinStart) / width) * w + this.kelvinStart;
         const rgb = colorTemperature2rgb(kelvin);
-        this.context.fillStyle = `rgba(${rgb.red},${rgb.green},${rgb.blue})`;
+        this.context.fillStyle = `rgb(${rgb.red},${rgb.green},${rgb.blue})`;
         this.context.fillRect(w, h, 1, 1);
       }
     }
     const selectedColorIndex = this.getSelectedColorIndex(this.color);
-    const controllers = new Controllers(this.canvas, this.radio, this.context, this.controllersEventOptions);
+    const controllers = new Controllers(
+      this.canvas,
+      this.radio,
+      this.context,
+      this.controllersEventOptions
+    );
     controllers.moveAt({ x: Number(selectedColorIndex) } as MouseEvent);
     this.color = controllers.color;
   }
